@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Restaurant Menu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        * { 
+            box-sizing: border-box;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url('your-background-image.jpg'); /* Replace with your background image */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(5px); /* Adds blur effect */
+            z-index: -1;
+        }
+        nav {
+            background-color: rgba(51, 51, 51, 0.8); /* Adds transparency */
+            padding: 15px;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+        }
+        nav a {
+            color: white;
+            padding: 14px 20px;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        nav a:hover {
+            background-color: #ff5722;
+            color: white;
+        }
+        .navbar-nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .navbar-nav a {
+            margin: 10px;
+        }
+        .hero-images img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        section {
+            display: none;
+        }
+        .active {
+            display: block;
+        }
+        .flip-card-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+        }
+        .flip-card {
+            width: 300px;
+            height: 450px;
+            perspective: 1000px;
+        }
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 10px;
+        }
+        .flip-card-front {
+            background-color: #fff;
+            overflow: hidden;
+        }
+        .flip-card-front img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        .flip-card-back {
+            background-color: #333;
+            color: #fff;
+            transform: rotateY(180deg);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 15px;
+        }
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        .back-footer {
+            padding: 10px;
+            text-align: center;
+        }
+        .order-btn, .quantity-btn {
+            background-color: #ff5722;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .quantity-btn {
+            padding: 10px;
+        }
+        .order-btn:hover, .quantity-btn:hover {
+            background-color: #e64a19;
+        }
+        .order-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 0;
+        }
+        .order-controls span {
+            font-size: 18px;
+            margin: 0 10px;
+        }
+        .contact-form {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        .contact-form button {
+            width: 100%;
+            padding: 10px;
+            background-color: #ff5722;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .contact-form button:hover {
+            background-color: #e64a19;
+        }
+        .message-sent {
+            display: none;
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #dff0d8;
+            color: #3c763d;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .location-link {
+            color: #ff5722;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        footer p {
+            margin: 0;
+        }
+        footer .footer-details {
+            margin-top: 10px;
+        }
+        footer a {
+            color: #ff5722;
+            text-decoration: none;
+        }
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+            }
+            nav a {
+                margin: 5px 0;
+                text-align: center;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#home">Restaurant Menu</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item"><a class="nav-link" href="#home" onclick="showSection('home')"><i class="fas fa-home"></i> Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#menu" onclick="showSection('menu')"><i class="fas fa-utensils"></i> Menu</a></li>
+                <li class="nav-item"><a class="nav-link" href="#contact" onclick="showSection('contact')"><i class="fas fa-phone"></i> Contact</a></li>
+                <li class="nav-item"><a class="nav-link" href="https://www.google.com/maps/search/Darling+Bakery,+Vellore" target="_blank"><i class="fas fa-location"></i> Location</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home" class="active">
+        <header class="title">
+            <h1>Welcome to Our Restaurant</h1>
+            <p>Explore our delicious dishes</p>
+        </header>
+        <div class="hero-images">
+            <img src="shopping (1).webp" style="height: 350px; width: 350px;" alt="Delicious Dish 1">
+            <img src="shopping (2).webp" style="height: 350px; width: 350px;" alt="Delicious Dish 2">
+            <img src="shopping.webp" style="height: 350px; width: 350px;" alt="Delicious Dish 3">
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu">
+        <div class="flip-card-container">
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <img src="cake1.jpg" alt="Dish 1">
+                    </div>
+                    <div class="flip-card-back">
+                        <h2>Dish 1</h2>
+                        <p>Delicious dish description goes here.</p>
+                        <div class="order-controls">
+                            <button class="quantity-btn" onclick="decreaseQuantity(1)">-</button>
+                            <span id="quantity1">1</span>
+                            <button class="quantity-btn" onclick="increaseQuantity(1)">+</button>
+                        </div>
+                        <p>Total Price: $<span id="totalPrice1">10</span></p>
+                        <button class="order-btn" onclick="orderNow('Dish 1', 1)">Order Now</button>
+                    </div>
+                </div>
+            </div>
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <img src="cake2.jpg" alt="Dish 2">
+                    </div>
+                    <div class="flip-card-back">
+                        <h2>Dish 2</h2>
+                        <p>Delicious dish description goes here.</p>
+                        <div class="order-controls">
+                            <button class="quantity-btn" onclick="decreaseQuantity(2)">-</button>
+                            <span id="quantity2">1</span>
+                            <button class="quantity-btn" onclick="increaseQuantity(2)">+</button>
+                        </div>
+                        <p>Total Price: $<span id="totalPrice2">15</span></p>
+                        <button class="order-btn" onclick="orderNow('Dish 2', 2)">Order Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="contact-form">
+            <h2>Contact Us</h2>
+            <form id="contactForm">
+                <input type="text" id="name" placeholder="Your Name" required>
+                <input type="email" id="email" placeholder="Your Email" required>
+                <input type="tel" id="phone" placeholder="Your Phone" required>
+                <textarea id="message" placeholder="Your Message" required></textarea>
+                <button type="submit">Send Message</button>
+            </form>
+            <div class="message-sent">Message sent successfully!</div>
+        </div>
+    </section>
+
+    <footer>
+        <p>Visit us at Darling Bakery, Vellore</p>
+        <div class="footer-details">
+            <p>Phone: <a href="tel:+919600335272">9600335272</a></p>
+            <p>Email: <a href="mailto:aslamaslama503@gmail.com">aslamaslama503@gmail.com</a></p>
+            <p><span class="location-link" onclick="window.open('https://www.google.com/maps/search/Darling+Bakery,+Vellore', '_blank')">View Location</span></p>
+        </div>
+    </footer>
+
+    <script>
+        // Function to show specific section
+        function showSection(section) {
+            document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
+            document.getElementById(section).classList.add('active');
+        }
+
+        // Functions to increase and decrease the quantity of items
+        function increaseQuantity(item) {
+            const quantity = document.getElementById(`quantity${item}`);
+            const totalPrice = document.getElementById(`totalPrice${item}`);
+            let currentQuantity = parseInt(quantity.textContent);
+            quantity.textContent = ++currentQuantity;
+            totalPrice.textContent = currentQuantity * (item === 1 ? 10 : 15);
+        }
+
+        function decreaseQuantity(item) {
+            const quantity = document.getElementById(`quantity${item}`);
+            const totalPrice = document.getElementById(`totalPrice${item}`);
+            let currentQuantity = parseInt(quantity.textContent);
+            if (currentQuantity > 1) {
+                quantity.textContent = --currentQuantity;
+                totalPrice.textContent = currentQuantity * (item === 1 ? 10 : 15);
+            }
+        }
+
+        // Order Now function
+        function orderNow(dish, item) {
+            const quantity = document.getElementById(`quantity${item}`).textContent;
+            const totalPrice = document.getElementById(`totalPrice${item}`).textContent;
+            alert(`You have ordered ${quantity} ${dish}(s) for a total of $${totalPrice}.`);
+        }
+
+        // Contact form submission with WhatsApp integration
+        document.getElementById('contactForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const message = document.getElementById('message').value;
+            const whatsappURL = `https://wa.me/9600335272?text=Name:%20${name}%0AEmail:%20${email}%0APhone:%20${phone}%0AMessage:%20${message}`;
+            window.open(whatsappURL, '_blank');
+            document.querySelector('.message-sent').style.display = 'block';
+        });
+    </script>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
